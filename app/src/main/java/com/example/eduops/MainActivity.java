@@ -2,6 +2,7 @@ package com.example.eduops;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Button;
@@ -50,5 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
         messageText.setText("Logging in...");
         messageText.setVisibility(View.VISIBLE);
+
+        Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }
