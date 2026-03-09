@@ -26,6 +26,12 @@
         <activity
             android:name=".AnnouncementsActivity"
             android:exported="false" />
+        <activity
+            android:name=".AssignmentsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GradesActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
