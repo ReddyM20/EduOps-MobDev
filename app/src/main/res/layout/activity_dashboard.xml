@@ -85,7 +85,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_view"
+                android:src="@android:drawable/ic_menu_today"
                 app:tint="@color/black" />
 
             <TextView
