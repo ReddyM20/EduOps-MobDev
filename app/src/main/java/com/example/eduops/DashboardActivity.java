@@ -1,5 +1,6 @@
 package com.example.eduops;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,7 +71,8 @@ public class DashboardActivity extends AppCompatActivity {
             navDashboard.setOnClickListener(v -> Toast.makeText(this, "Dashboard Clicked", Toast.LENGTH_SHORT).show());
         }
         if (navAnnouncements != null) {
-            navAnnouncements.setOnClickListener(v -> Toast.makeText(this, "Announcements Clicked", Toast.LENGTH_SHORT).show());
+            navAnnouncements.setOnClickListener(v -> startActivity(
+                    new Intent(this, AnnouncementsActivity.class)));
         }
         if (navAssignments != null) {
             navAssignments.setOnClickListener(v -> Toast.makeText(this, "Assignments Clicked", Toast.LENGTH_SHORT).show());
