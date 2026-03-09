@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="card_bg">#5D6D7E</color>
+    <color name="input_bg">#FFFBF0</color>
+    <color name="button_login">#0A1931</color>
+    <color name="accent_yellow">#FFD700</color>
+    <color name="text_white">#FFFFFF</color>
+    <color name="primary">#0066CC</color>
+    <color name="primary_dark">#0052A3</color>
+    <color name="accent">#FF6B6B</color>
+    <color name="text_primary">#1F2937</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="border">#E5E7EB</color>
+    <color name="background">#F9FAFB</color>
+    <color name="success">#10B981</color>
+    <color name="warning">#F59E0B</color>
+    <color name="error">#EF4444</color>
 </resources>
