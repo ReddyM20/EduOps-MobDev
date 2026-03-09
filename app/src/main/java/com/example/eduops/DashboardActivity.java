@@ -75,10 +75,12 @@ public class DashboardActivity extends AppCompatActivity {
                     new Intent(this, AnnouncementsActivity.class)));
         }
         if (navAssignments != null) {
-            navAssignments.setOnClickListener(v -> Toast.makeText(this, "Assignments Clicked", Toast.LENGTH_SHORT).show());
+            navAssignments.setOnClickListener(v -> startActivity(
+                    new Intent(this, AssignmentsActivity.class)));
         }
         if (navGrades != null) {
-            navGrades.setOnClickListener(v -> Toast.makeText(this, "Grades Clicked", Toast.LENGTH_SHORT).show());
+            navGrades.setOnClickListener(v -> startActivity(
+                    new Intent(this, GradesActivity.class)));
         }
     }
 }
