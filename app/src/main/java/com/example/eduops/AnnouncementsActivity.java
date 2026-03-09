@@ -71,7 +71,7 @@ public class AnnouncementsActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.navAssignments).setOnClickListener(v ->
-                Toast.makeText(this, "Assignments coming soon", Toast.LENGTH_SHORT).show());
+                startActivity(new Intent(this, AssignmentsActivity.class)));
 
         findViewById(R.id.navGrades).setOnClickListener(v ->
                 Toast.makeText(this, "Grades coming soon", Toast.LENGTH_SHORT).show());
