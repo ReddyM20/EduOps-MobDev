@@ -1,20 +1,25 @@
 package com.example.eduops;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GradesActivity extends AppCompatActivity {
 
-    // { courseCode, status }  — status: "PASS" | "FAIL" | "NO GRADE"
-    private static final String[][] GRADES = {
+    private static final String[][] GRADES_DATA = {
             {"CIS 2101",  "NO GRADE"},
             {"CIS 2103N", "PASS"},
             {"CIS 2106N", "FAIL"},
@@ -26,59 +31,52 @@ public class GradesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grades);
 
-        populateGrades();
+        ListView listView = findViewById(R.id.gradesListView);
+        List<Grade> grades = new ArrayList<>();
+        for (String[] d : GRADES_DATA) {
+            grades.add(new Grade(d[0], d[1]));
+        }
+
+        listView.setAdapter(new GradeAdapter(this, grades));
         setupNavigation();
     }
 
-    private void populateGrades() {
-        LinearLayout container = findViewById(R.id.gradesContainer);
-        LayoutInflater inflater = LayoutInflater.from(this);
-
-        for (String[] grade : GRADES) {
-            View row = inflater.inflate(R.layout.item_grade_row, container, false);
-
-            ((TextView) row.findViewById(R.id.gradeCourseName)).setText(grade[0]);
-
-            TextView statusView = row.findViewById(R.id.gradeStatus);
-            statusView.setText(grade[1]);
-            switch (grade[1]) {
-                case "PASS":
-                    statusView.setTextColor(Color.parseColor("#2E7D32"));
-                    break;
-                case "FAIL":
-                    statusView.setTextColor(Color.parseColor("#C62828"));
-                    break;
-                default:
-                    statusView.setTextColor(Color.parseColor("#757575"));
-                    break;
-            }
-
-            row.findViewById(R.id.detailsButton).setOnClickListener(v ->
-                    Toast.makeText(this, "Details for " + grade[0], Toast.LENGTH_SHORT).show());
-
-            container.addView(row);
-        }
+    private void setupNavigation() {
+        findViewById(R.id.navDashboard).setOnClickListener(v -> startActivity(new Intent(this, DashboardActivity.class)));
+        findViewById(R.id.navAnnouncements).setOnClickListener(v -> startActivity(new Intent(this, AnnouncementsActivity.class)));
+        findViewById(R.id.navAssignments).setOnClickListener(v -> startActivity(new Intent(this, AssignmentsActivity.class)));
     }
 
-    private void setupNavigation() {
-        findViewById(R.id.navDashboard).setOnClickListener(v -> {
-            Intent intent = new Intent(this, DashboardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-        });
+    static class Grade {
+        String course, status;
+        Grade(String c, String s) { course=c; status=s; }
+    }
 
-        findViewById(R.id.navAnnouncements).setOnClickListener(v -> {
-            Intent intent = new Intent(this, AnnouncementsActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-        });
+    static class GradeAdapter extends BaseAdapter {
+        private final Context context;
+        private final List<Grade> list;
+        GradeAdapter(Context c, List<Grade> l) { context=c; list=l; }
+        @Override public int getCount() { return list.size(); }
+        @Override public Object getItem(int i) { return list.get(i); }
+        @Override public long getItemId(int i) { return i; }
+        @Override public View getView(int i, View view, ViewGroup parent) {
+            if (view == null) view = LayoutInflater.from(context).inflate(R.layout.item_grade_row, parent, false);
+            Grade g = list.get(i);
+            
+            ((TextView) view.findViewById(R.id.gradeCourseName)).setText(g.course);
+            TextView statusView = view.findViewById(R.id.gradeStatus);
+            statusView.setText(g.status);
+            
+            switch (g.status) {
+                case "PASS": statusView.setTextColor(Color.parseColor("#2E7D32")); break;
+                case "FAIL": statusView.setTextColor(Color.parseColor("#C62828")); break;
+                default: statusView.setTextColor(Color.parseColor("#757575")); break;
+            }
 
-        findViewById(R.id.navAssignments).setOnClickListener(v -> {
-            Intent intent = new Intent(this, AssignmentsActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-        });
+            view.findViewById(R.id.detailsButton).setOnClickListener(v ->
+                    Toast.makeText(context, "Details for " + g.course, Toast.LENGTH_SHORT).show());
 
-        findViewById(R.id.navGrades).setOnClickListener(v -> { /* already here */ });
+            return view;
+        }
     }
 }

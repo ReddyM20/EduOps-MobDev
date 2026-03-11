@@ -8,7 +8,6 @@
     android:background="#F5F5F5"
     tools:context=".DashboardActivity">
 
-    <!-- Page Header -->
     <RelativeLayout
         android:id="@+id/pageHeader"
         android:layout_width="match_parent"
@@ -39,20 +38,16 @@
 
     </RelativeLayout>
 
-    <!-- Scrollable Course List -->
-    <ScrollView
+    <ListView
+        android:id="@+id/coursesListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottomNav"
-        android:layout_below="@id/pageHeader">
-
-        <LinearLayout
-            android:id="@+id/coursesContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-
-    </ScrollView>
+        android:layout_below="@id/pageHeader"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false" />
 
     <!-- Floating Bottom Navigation -->
     <LinearLayout
@@ -81,13 +76,11 @@
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical">
-
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_today"
                 app:tint="@color/black" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -95,7 +88,6 @@
                 android:textColor="@color/black"
                 android:textSize="10sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
 
         <!-- Announcements Tab -->
@@ -108,13 +100,11 @@
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical">
-
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_view"
                 app:tint="@color/black" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -122,7 +112,6 @@
                 android:textColor="@color/black"
                 android:textSize="10sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
 
         <!-- Assignments Tab -->
@@ -135,13 +124,11 @@
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical">
-
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_edit"
                 app:tint="@color/black" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -149,7 +136,6 @@
                 android:textColor="@color/black"
                 android:textSize="10sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
 
         <!-- Grades Tab -->
@@ -162,13 +148,11 @@
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical">
-
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_agenda"
                 app:tint="@color/black" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -176,9 +160,6 @@
                 android:textColor="@color/black"
                 android:textSize="10sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
-
     </LinearLayout>
-
 </RelativeLayout>

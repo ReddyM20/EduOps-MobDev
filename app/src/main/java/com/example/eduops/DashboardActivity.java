@@ -1,20 +1,24 @@
 package com.example.eduops;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DashboardActivity extends AppCompatActivity {
 
-    // Course groups: { groupTitle, semester, courseCode, progressPercent }
-    private static final Object[][] COURSE_GROUPS = {
+    private static final Object[][] COURSE_DATA = {
             {"MOBILE DEVELOPMENT", "AY 2025 - 2026, 2ND SEMESTER", "CIS 2203N - January 2026", 75},
             {"NC IV CERTIFICATE 2", "AY 2025 - 2026, 2ND SEMESTER", "CIS 2206N - January 2026", 75},
             {"DATA STRUCTURES AND\nALGORITHMS", "AY 2025 - 2026, 2ND SEMESTER", "CIS 2201 - January 2026", 75},
@@ -25,62 +29,45 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        populateCourses();
+        ListView listView = findViewById(R.id.coursesListView);
+        List<Course> courses = new ArrayList<>();
+        for (Object[] d : COURSE_DATA) {
+            courses.add(new Course((String) d[0], (String) d[1], (String) d[2], (int) d[3]));
+        }
+
+        listView.setAdapter(new CourseAdapter(this, courses));
         setupNavigation();
     }
 
-    private void populateCourses() {
-        LinearLayout container = findViewById(R.id.coursesContainer);
-        if (container == null) return;
-        
-        LayoutInflater inflater = LayoutInflater.from(this);
-
-        for (Object[] group : COURSE_GROUPS) {
-            String groupTitle = (String) group[0];
-            String semester = (String) group[1];
-            String courseCode = (String) group[2];
-            int progress = (int) group[3];
-
-            View item = inflater.inflate(R.layout.view_course_group, container, false);
-
-            TextView titleView = item.findViewById(R.id.groupTitle);
-            TextView semesterView = item.findViewById(R.id.groupSemester);
-            TextView codeView = item.findViewById(R.id.courseCode);
-            ProgressBar progressBar = item.findViewById(R.id.progressBar);
-            TextView percentView = item.findViewById(R.id.progressPercent);
-            TextView labelView = item.findViewById(R.id.progressLabel);
-
-            titleView.setText(groupTitle);
-            semesterView.setText(semester);
-            codeView.setText(courseCode);
-            progressBar.setProgress(progress);
-            percentView.setText(progress + "%");
-            labelView.setText("Progress: " + progress + "%");
-
-            container.addView(item);
-        }
+    private void setupNavigation() {
+        findViewById(R.id.navAnnouncements).setOnClickListener(v -> startActivity(new Intent(this, AnnouncementsActivity.class)));
+        findViewById(R.id.navAssignments).setOnClickListener(v -> startActivity(new Intent(this, AssignmentsActivity.class)));
+        findViewById(R.id.navGrades).setOnClickListener(v -> startActivity(new Intent(this, GradesActivity.class)));
     }
 
-    private void setupNavigation() {
-        View navDashboard = findViewById(R.id.navDashboard);
-        View navAnnouncements = findViewById(R.id.navAnnouncements);
-        View navAssignments = findViewById(R.id.navAssignments);
-        View navGrades = findViewById(R.id.navGrades);
+    static class Course {
+        String title, semester, code;
+        int progress;
+        Course(String t, String s, String c, int p) { title=t; semester=s; code=c; progress=p; }
+    }
 
-        if (navDashboard != null) {
-            navDashboard.setOnClickListener(v -> Toast.makeText(this, "Dashboard Clicked", Toast.LENGTH_SHORT).show());
-        }
-        if (navAnnouncements != null) {
-            navAnnouncements.setOnClickListener(v -> startActivity(
-                    new Intent(this, AnnouncementsActivity.class)));
-        }
-        if (navAssignments != null) {
-            navAssignments.setOnClickListener(v -> startActivity(
-                    new Intent(this, AssignmentsActivity.class)));
-        }
-        if (navGrades != null) {
-            navGrades.setOnClickListener(v -> startActivity(
-                    new Intent(this, GradesActivity.class)));
+    static class CourseAdapter extends BaseAdapter {
+        private final Context context;
+        private final List<Course> list;
+        CourseAdapter(Context c, List<Course> l) { context=c; list=l; }
+        @Override public int getCount() { return list.size(); }
+        @Override public Object getItem(int i) { return list.get(i); }
+        @Override public long getItemId(int i) { return i; }
+        @Override public View getView(int i, View view, ViewGroup parent) {
+            if (view == null) view = LayoutInflater.from(context).inflate(R.layout.view_course_group, parent, false);
+            Course c = list.get(i);
+            ((TextView) view.findViewById(R.id.groupTitle)).setText(c.title);
+            ((TextView) view.findViewById(R.id.groupSemester)).setText(c.semester);
+            ((TextView) view.findViewById(R.id.courseCode)).setText(c.code);
+            ((ProgressBar) view.findViewById(R.id.progressBar)).setProgress(c.progress);
+            ((TextView) view.findViewById(R.id.progressPercent)).setText(c.progress + "%");
+            ((TextView) view.findViewById(R.id.progressLabel)).setText("Progress: " + c.progress + "%");
+            return view;
         }
     }
 }

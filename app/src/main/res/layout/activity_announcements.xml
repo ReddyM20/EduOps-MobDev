@@ -8,7 +8,6 @@
     android:background="#F5F5F5"
     tools:context=".AnnouncementsActivity">
 
-    <!-- Page Header -->
     <RelativeLayout
         android:id="@+id/pageHeader"
         android:layout_width="match_parent"
@@ -29,7 +28,17 @@
 
     </RelativeLayout>
 
-    <!-- Floating Bottom Navigation -->
+    <ListView
+        android:id="@+id/announcementsListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomNav"
+        android:layout_below="@id/pageHeader"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false" />
+
     <LinearLayout
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
@@ -45,7 +54,6 @@
         android:paddingStart="4dp"
         android:paddingEnd="4dp">
 
-        <!-- Dashboard Tab -->
         <LinearLayout
             android:id="@+id/navDashboard"
             android:layout_width="0dp"
@@ -55,13 +63,11 @@
             android:focusable="true"
             android:gravity="center"
             android:orientation="vertical">
-
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_today"
                 app:tint="@color/black" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,10 +75,8 @@
                 android:textColor="@color/black"
                 android:textSize="10sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
 
-        <!-- Announcements Tab (selected) -->
         <LinearLayout
             android:id="@+id/navAnnouncements"
             android:layout_width="0dp"
@@ -83,13 +87,11 @@
             android:focusable="true"
             android:gravity="center"
             android:orientation="vertical">
-
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_view"
                 app:tint="@color/black" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -97,10 +99,8 @@
                 android:textColor="@color/black"
                 android:textSize="10sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
 
-        <!-- Assignments Tab -->
         <LinearLayout
             android:id="@+id/navAssignments"
             android:layout_width="0dp"
@@ -110,13 +110,11 @@
             android:focusable="true"
             android:gravity="center"
             android:orientation="vertical">
-
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_edit"
                 app:tint="@color/black" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -124,10 +122,8 @@
                 android:textColor="@color/black"
                 android:textSize="10sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
 
-        <!-- Grades Tab -->
         <LinearLayout
             android:id="@+id/navGrades"
             android:layout_width="0dp"
@@ -137,13 +133,11 @@
             android:focusable="true"
             android:gravity="center"
             android:orientation="vertical">
-
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_agenda"
                 app:tint="@color/black" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -151,25 +145,6 @@
                 android:textColor="@color/black"
                 android:textSize="10sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
-
     </LinearLayout>
-
-    <!-- Scrollable Announcements List -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottomNav"
-        android:layout_below="@id/pageHeader"
-        android:layout_marginBottom="8dp">
-
-        <LinearLayout
-            android:id="@+id/announcementsContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-
-    </ScrollView>
-
 </RelativeLayout>
