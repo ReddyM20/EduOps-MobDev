@@ -26,16 +26,6 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/allCoursesLink"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:text="All Courses"
-            android:textColor="#5D6D7E"
-            android:textSize="14sp" />
-
     </RelativeLayout>
 
     <ListView

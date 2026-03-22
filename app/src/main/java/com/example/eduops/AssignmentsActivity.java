@@ -1,5 +1,6 @@
 package com.example.eduops;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,16 +8,16 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AssignmentsActivity extends AppCompatActivity {
 
-    // { title, subject, dueDate, priority, isCompleted }
-    private static final Object[][] ALL_ASSIGNMENTS = {
-            {"Math Homework",    "Mathematics", "Due March 2, 2026, 11:59 PM", "High",   false},
-            {"English Homework", "English",     "Due March 2, 2026, 11:59 PM", "Medium", false},
-            {"Science Homework", "Science",     "Due March 2, 2026, 11:59 PM", "High",   false},
-    };
+    private List<Assignment> allAssignments;
 
     private String currentFilter = "All";
 
@@ -25,10 +26,15 @@ public class AssignmentsActivity extends AppCompatActivity {
     private TextView filterCompleted;
     private LinearLayout container;
 
+    private ActivityResultLauncher<Intent> assignmentDetailLauncher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignments);
+
+        setupAssignmentDetailLauncher();
+        initializeAssignments();
 
         filterAll       = findViewById(R.id.filterAll);
         filterUpcoming  = findViewById(R.id.filterUpcoming);
@@ -41,6 +47,43 @@ public class AssignmentsActivity extends AppCompatActivity {
 
         setupNavigation();
         applyFilter("All");
+    }
+
+    private void setupAssignmentDetailLauncher() {
+        assignmentDetailLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        Assignment updatedAssignment = (Assignment) result.getData().getSerializableExtra("assignment");
+                        int position = result.getData().getIntExtra("position", -1);
+                        if (updatedAssignment != null && position >= 0 && position < allAssignments.size()) {
+                            allAssignments.set(position, updatedAssignment);
+                            populateList();
+                        }
+                    }
+                }
+        );
+    }
+
+    private void initializeAssignments() {
+        allAssignments = new ArrayList<>();
+        // Initialize with sample assignments
+        // Note: For testing with current date (March 22, 2026):
+        // - March 25 = 3 days = High priority
+        // - March 29 = 7 days = Medium priority
+        // - April 5 = 14 days = Low priority
+        allAssignments.add(new Assignment("A001", "Math Homework", "Mathematics",
+                "Due March 25, 2026, 11:59 PM",
+                "Complete exercises 1-20 on page 45. Show all work and calculations.",
+                false));
+        allAssignments.add(new Assignment("A002", "English Essay", "English",
+                "Due March 29, 2026, 11:59 PM",
+                "Write a 500-word essay on the theme of the assigned novel. Use MLA format.",
+                false));
+        allAssignments.add(new Assignment("A003", "Science Project", "Science",
+                "Due April 5, 2026, 11:59 PM",
+                "Create a presentation on renewable energy sources. Include diagrams and research.",
+                false));
     }
 
     private void applyFilter(String filter) {
@@ -71,23 +114,46 @@ public class AssignmentsActivity extends AppCompatActivity {
         container.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        for (Object[] a : ALL_ASSIGNMENTS) {
-            boolean isCompleted = (boolean) a[4];
+        for (int i = 0; i < allAssignments.size(); i++) {
+            Assignment assignment = allAssignments.get(i);
+
+            boolean isCompleted = assignment.isCompleted();
             if ("Upcoming".equals(currentFilter)  &&  isCompleted) continue;
             if ("Completed".equals(currentFilter) && !isCompleted) continue;
 
             View item = inflater.inflate(R.layout.item_assignment, container, false);
 
-            ((TextView) item.findViewById(R.id.assignmentTitle)).setText((String) a[0]);
-            ((TextView) item.findViewById(R.id.assignmentSubject)).setText((String) a[1]);
-            ((TextView) item.findViewById(R.id.dueDate)).setText((String) a[2]);
+            ((TextView) item.findViewById(R.id.assignmentTitle)).setText(assignment.getTitle());
+            ((TextView) item.findViewById(R.id.assignmentSubject)).setText(assignment.getSubject());
+
+            // Show submission status in due date field
+            String statusText = assignment.getDueDate();
+            if (assignment.isSubmitted()) {
+                statusText += " • " + assignment.getSubmissionStatus();
+            }
+            ((TextView) item.findViewById(R.id.dueDate)).setText(statusText);
 
             TextView badge = item.findViewById(R.id.priorityBadge);
-            String priority = (String) a[3];
+            String priority = assignment.getPriority();
             badge.setText(priority + " Priority");
-            badge.setBackgroundResource("High".equals(priority)
-                    ? R.drawable.priority_high_bg
-                    : R.drawable.priority_medium_bg);
+
+            // Set background color based on priority
+            if ("High".equals(priority)) {
+                badge.setBackgroundResource(R.drawable.priority_high_bg);
+            } else if ("Medium".equals(priority)) {
+                badge.setBackgroundResource(R.drawable.priority_medium_bg);
+            } else {
+                badge.setBackgroundResource(R.drawable.priority_low_bg);
+            }
+
+            // Add click listener to open assignment detail
+            final int position = i;
+            item.setOnClickListener(v -> {
+                Intent intent = new Intent(this, AssignmentDetailActivity.class);
+                intent.putExtra("assignment", assignment);
+                intent.putExtra("position", position);
+                assignmentDetailLauncher.launch(intent);
+            });
 
             container.addView(item);
         }

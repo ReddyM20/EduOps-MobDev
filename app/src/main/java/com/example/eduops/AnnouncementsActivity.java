@@ -26,9 +26,9 @@ public class AnnouncementsActivity extends AppCompatActivity {
             "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...  ";
 
     private static final String[][] ANNOUNCEMENTS_DATA = {
-            {"John Carlo", "CIS 2101 Coordinator", "2 hours ago", "Test Post"},
-            {"John Carlo", "CIS 2203N Coordinator", "2 hours ago", "Test Post"},
-            {"John Carlo", "CIS 2206N Coordinator", "2 hours ago", "Test Post"},
+            {"John Carlo", "CIS 2101 Coordinator", "2 hours ago", "Midterm Exam"},
+            {"Jane Carla", "CIS 2203N Coordinator", "1 hours ago", "Assignment"},
+            {"John Carlo", "CIS 2206N Coordinator", "2 hours ago", "Announcement"},
     };
 
     @Override
