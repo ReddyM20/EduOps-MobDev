@@ -10,9 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class CourseDetailActivity extends AppCompatActivity {
+public class CourseDetailActivity extends BaseActivity {
 
     private Course course;
     private LinearLayout lessonsContainer;
@@ -22,7 +20,6 @@ public class CourseDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_detail);
 
-        // Get course from intent
         course = (Course) getIntent().getSerializableExtra("course");
 
         if (course == null) {
@@ -32,7 +29,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         }
 
         setupViews();
-        setupNavigation();
+        setupCommonNavigation();
         loadLessons();
     }
 
@@ -66,7 +63,6 @@ public class CourseDetailActivity extends AppCompatActivity {
             lessonDescription.setText(lesson.getDescription());
             lessonDuration.setText(lesson.getContentTypeString() + " • " + lesson.getDurationMinutes() + " mins");
 
-            // Set icon based on content type
             switch (lesson.getContentType()) {
                 case TEXT:
                     contentTypeIcon.setImageResource(android.R.drawable.ic_menu_info_details);
@@ -79,9 +75,7 @@ public class CourseDetailActivity extends AppCompatActivity {
                     break;
             }
 
-            // Handle lesson click
             lessonItem.setOnClickListener(v -> openLesson(lesson));
-
             lessonsContainer.addView(lessonItem);
         }
     }
@@ -89,12 +83,10 @@ public class CourseDetailActivity extends AppCompatActivity {
     private void openLesson(Lesson lesson) {
         switch (lesson.getContentType()) {
             case TEXT:
-                // Show text content in a toast for now (could be a dialog or new activity)
                 Toast.makeText(this, "Text: " + lesson.getTextContent(), Toast.LENGTH_LONG).show();
                 break;
             case PDF:
             case VIDEO:
-                // Open URL in browser
                 if (lesson.getContentUrl() != null && !lesson.getContentUrl().isEmpty()) {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(lesson.getContentUrl()));
                     startActivity(browserIntent);
@@ -103,25 +95,5 @@ public class CourseDetailActivity extends AppCompatActivity {
                 }
                 break;
         }
-    }
-
-    private void setupNavigation() {
-        findViewById(R.id.navDashboard).setOnClickListener(v -> {
-            Intent i = new Intent(this, DashboardActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(i);
-        });
-
-        findViewById(R.id.navAnnouncements).setOnClickListener(v -> {
-            Intent i = new Intent(this, AnnouncementsActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(i);
-        });
-
-        findViewById(R.id.navAssignments).setOnClickListener(v ->
-                startActivity(new Intent(this, AssignmentsActivity.class)));
-
-        findViewById(R.id.navGrades).setOnClickListener(v ->
-                startActivity(new Intent(this, GradesActivity.class)));
     }
 }

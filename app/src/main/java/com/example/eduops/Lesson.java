@@ -24,12 +24,10 @@ public class Lesson implements Serializable {
         this.contentType = contentType;
     }
 
-    // For TEXT type lessons
     public void setTextContent(String textContent) {
         this.textContent = textContent;
     }
 
-    // For PDF and VIDEO type lessons
     public void setContentUrl(String contentUrl) {
         this.contentUrl = contentUrl;
     }

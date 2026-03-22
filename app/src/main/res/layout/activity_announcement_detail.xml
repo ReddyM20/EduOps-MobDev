@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F8F9FA"
-    tools:context=".CourseDetailActivity">
+    tools:context=".AnnouncementDetailActivity">
 
     <!-- Header with Back Button -->
     <RelativeLayout
@@ -27,81 +27,121 @@
             android:contentDescription="Back" />
 
         <TextView
-            android:id="@+id/courseName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/backButton"
             android:layout_centerVertical="true"
             android:layout_marginStart="16dp"
-            android:text="Course Name"
+            android:text="Announcement"
             android:textColor="#0A1931"
             android:textSize="20sp"
             android:textStyle="bold" />
 
     </RelativeLayout>
 
-    <!-- Course Info Section -->
+    <!-- Content Section -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/headerSection"
-        android:layout_above="@id/bottomNavContainer">
+        android:layout_above="@id/bottomNav">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:padding="20dp"
+            android:layout_margin="16dp">
 
-            <!-- Course Details Card -->
+            <!-- Author Section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@android:color/white"
-                android:padding="20dp"
-                android:layout_margin="16dp">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/courseInstructor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Instructor: Dr. John Doe"
-                    android:textColor="#444444"
-                    android:textSize="14sp" />
+                <!-- Avatar -->
+                <FrameLayout
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:background="@drawable/avatar_circle_bg"
+                    android:layout_marginEnd="14dp">
 
-                <TextView
-                    android:id="@+id/courseDescription"
-                    android:layout_width="wrap_content"
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/user"
+                        app:tint="#5D6D7E" />
+
+                </FrameLayout>
+
+                <!-- Name, role, time -->
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Course description goes here..."
-                    android:textColor="#666666"
-                    android:textSize="14sp" />
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/posterName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="John Carlo"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/posterRole"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CIS 2203N Coordinator"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/postTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="2 hours ago"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Lessons Section Header -->
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="#E5E7EB" />
+
+            <!-- Title -->
             <TextView
+                android:id="@+id/postTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="Lessons"
-                android:textColor="#0A1931"
-                android:textSize="18sp"
+                android:text="Announcement Title"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <!-- Lessons List Container -->
-            <LinearLayout
-                android:id="@+id/lessonsContainer"
+            <!-- Full Content -->
+            <TextView
+                android:id="@+id/postContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="16dp">
-
-
-            </LinearLayout>
+                android:layout_marginTop="12dp"
+                android:text="Full announcement content goes here..."
+                android:textColor="@color/text_secondary"
+                android:textSize="15sp"
+                android:lineSpacingMultiplier="1.4" />
 
         </LinearLayout>
 
@@ -147,12 +187,13 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Announcements -->
+            <!-- Announcements (Selected) -->
             <LinearLayout
                 android:id="@+id/navAnnouncements"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_weight="1"
+                android:background="@drawable/nav_selected_bg"
                 android:gravity="center"
                 android:orientation="vertical">
                 <ImageView
@@ -214,6 +255,7 @@
             </LinearLayout>
 
         </LinearLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

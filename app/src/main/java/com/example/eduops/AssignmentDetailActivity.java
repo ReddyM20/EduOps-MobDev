@@ -84,13 +84,7 @@ public class AssignmentDetailActivity extends AppCompatActivity {
 
         String priority = assignment.getPriority();
         priorityBadge.setText(priority + " Priority");
-        if ("High".equals(priority)) {
-            priorityBadge.setBackgroundResource(R.drawable.priority_high_bg);
-        } else if ("Medium".equals(priority)) {
-            priorityBadge.setBackgroundResource(R.drawable.priority_medium_bg);
-        } else {
-            priorityBadge.setBackgroundResource(R.drawable.priority_low_bg);
-        }
+        setPriorityBackground(priorityBadge, priority);
 
         selectedFileText = findViewById(R.id.selectedFileText);
         Button selectFileButton = findViewById(R.id.selectFileButton);
@@ -171,7 +165,6 @@ public class AssignmentDetailActivity extends AppCompatActivity {
         assignment.submitAssignment(selectedFileName);
         Toast.makeText(this, "Assignment submitted successfully!", Toast.LENGTH_LONG).show();
 
-        // Update UI to reflect submission
         updateUI();
     }
 
@@ -183,5 +176,15 @@ public class AssignmentDetailActivity extends AppCompatActivity {
         resultIntent.putExtra("position", getIntent().getIntExtra("position", -1));
         setResult(RESULT_OK, resultIntent);
         super.onBackPressed();
+    }
+
+    static void setPriorityBackground(TextView badge, String priority) {
+        if ("High".equals(priority)) {
+            badge.setBackgroundResource(R.drawable.priority_high_bg);
+        } else if ("Medium".equals(priority)) {
+            badge.setBackgroundResource(R.drawable.priority_medium_bg);
+        } else {
+            badge.setBackgroundResource(R.drawable.priority_low_bg);
+        }
     }
 }

@@ -66,24 +66,7 @@ public class AssignmentsActivity extends AppCompatActivity {
     }
 
     private void initializeAssignments() {
-        allAssignments = new ArrayList<>();
-        // Initialize with sample assignments
-        // Note: For testing with current date (March 22, 2026):
-        // - March 25 = 3 days = High priority
-        // - March 29 = 7 days = Medium priority
-        // - April 5 = 14 days = Low priority
-        allAssignments.add(new Assignment("A001", "Math Homework", "Mathematics",
-                "Due March 25, 2026, 11:59 PM",
-                "Complete exercises 1-20 on page 45. Show all work and calculations.",
-                false));
-        allAssignments.add(new Assignment("A002", "English Essay", "English",
-                "Due March 29, 2026, 11:59 PM",
-                "Write a 500-word essay on the theme of the assigned novel. Use MLA format.",
-                false));
-        allAssignments.add(new Assignment("A003", "Science Project", "Science",
-                "Due April 5, 2026, 11:59 PM",
-                "Create a presentation on renewable energy sources. Include diagrams and research.",
-                false));
+        allAssignments = new ArrayList<>(MockDataFactory.getAssignments());
     }
 
     private void applyFilter(String filter) {
@@ -126,7 +109,6 @@ public class AssignmentsActivity extends AppCompatActivity {
             ((TextView) item.findViewById(R.id.assignmentTitle)).setText(assignment.getTitle());
             ((TextView) item.findViewById(R.id.assignmentSubject)).setText(assignment.getSubject());
 
-            // Show submission status in due date field
             String statusText = assignment.getDueDate();
             if (assignment.isSubmitted()) {
                 statusText += " • " + assignment.getSubmissionStatus();
@@ -136,17 +118,8 @@ public class AssignmentsActivity extends AppCompatActivity {
             TextView badge = item.findViewById(R.id.priorityBadge);
             String priority = assignment.getPriority();
             badge.setText(priority + " Priority");
+            AssignmentDetailActivity.setPriorityBackground(badge, priority);
 
-            // Set background color based on priority
-            if ("High".equals(priority)) {
-                badge.setBackgroundResource(R.drawable.priority_high_bg);
-            } else if ("Medium".equals(priority)) {
-                badge.setBackgroundResource(R.drawable.priority_medium_bg);
-            } else {
-                badge.setBackgroundResource(R.drawable.priority_low_bg);
-            }
-
-            // Add click listener to open assignment detail
             final int position = i;
             item.setOnClickListener(v -> {
                 Intent intent = new Intent(this, AssignmentDetailActivity.class);

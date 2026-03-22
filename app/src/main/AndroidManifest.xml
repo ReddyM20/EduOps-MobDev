@@ -38,6 +38,9 @@
         <activity
             android:name=".AssignmentDetailActivity"
             android:exported="false" />
+        <activity
+            android:name=".AnnouncementDetailActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
