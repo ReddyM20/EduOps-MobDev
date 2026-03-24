@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:gravity="center"
-            android:text="Status"
+            android:text="GPA"
             android:textColor="#0A1931"
             android:textSize="12sp"
             android:textStyle="bold" />

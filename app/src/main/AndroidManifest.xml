@@ -32,6 +32,15 @@
         <activity
             android:name=".GradesActivity"
             android:exported="false" />
+        <activity
+            android:name=".CourseDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AssignmentDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AnnouncementDetailActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

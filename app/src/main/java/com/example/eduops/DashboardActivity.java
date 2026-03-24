@@ -18,42 +18,45 @@ import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    private static final Object[][] COURSE_DATA = {
-            {"MOBILE DEVELOPMENT", "AY 2025 - 2026, 2ND SEMESTER", "CIS 2203N - January 2026", 75},
-            {"NC IV CERTIFICATE 2", "AY 2025 - 2026, 2ND SEMESTER", "CIS 2206N - January 2026", 75},
-            {"DATA STRUCTURES AND\nALGORITHMS", "AY 2025 - 2026, 2ND SEMESTER", "CIS 2201 - January 2026", 75},
-    };
+    private List<Course> courses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        initializeCourses();
+
         ListView listView = findViewById(R.id.coursesListView);
-        List<Course> courses = new ArrayList<>();
-        for (Object[] d : COURSE_DATA) {
-            courses.add(new Course((String) d[0], (String) d[1], (String) d[2], (int) d[3]));
+        if (listView != null) {
+            listView.setAdapter(new CourseAdapter(this, courses));
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                Course selectedCourse = courses.get(position);
+                Intent intent = new Intent(this, CourseDetailActivity.class);
+                intent.putExtra("course", selectedCourse);
+                startActivity(intent);
+            });
         }
 
-        listView.setAdapter(new CourseAdapter(this, courses));
         setupNavigation();
     }
 
+    private void initializeCourses() {
+        courses = MockDataFactory.getCourses();
+    }
+
     private void setupNavigation() {
+        findViewById(R.id.navDashboard).setOnClickListener(v -> { /* already here */ });
         findViewById(R.id.navAnnouncements).setOnClickListener(v -> startActivity(new Intent(this, AnnouncementsActivity.class)));
         findViewById(R.id.navAssignments).setOnClickListener(v -> startActivity(new Intent(this, AssignmentsActivity.class)));
         findViewById(R.id.navGrades).setOnClickListener(v -> startActivity(new Intent(this, GradesActivity.class)));
     }
 
-    static class Course {
-        String title, semester, code;
-        int progress;
-        Course(String t, String s, String c, int p) { title=t; semester=s; code=c; progress=p; }
-    }
-
     static class CourseAdapter extends BaseAdapter {
         private final Context context;
         private final List<Course> list;
+        private final int[] progressValues = {90, 65, 40}; // Hardcoded progress for display
+
         CourseAdapter(Context c, List<Course> l) { context=c; list=l; }
         @Override public int getCount() { return list.size(); }
         @Override public Object getItem(int i) { return list.get(i); }
@@ -61,12 +64,14 @@ public class DashboardActivity extends AppCompatActivity {
         @Override public View getView(int i, View view, ViewGroup parent) {
             if (view == null) view = LayoutInflater.from(context).inflate(R.layout.view_course_group, parent, false);
             Course c = list.get(i);
-            ((TextView) view.findViewById(R.id.groupTitle)).setText(c.title);
-            ((TextView) view.findViewById(R.id.groupSemester)).setText(c.semester);
-            ((TextView) view.findViewById(R.id.courseCode)).setText(c.code);
-            ((ProgressBar) view.findViewById(R.id.progressBar)).setProgress(c.progress);
-            ((TextView) view.findViewById(R.id.progressPercent)).setText(c.progress + "%");
-            ((TextView) view.findViewById(R.id.progressLabel)).setText("Progress: " + c.progress + "%");
+            int progress = (i < progressValues.length) ? progressValues[i] : 0;
+
+            ((TextView) view.findViewById(R.id.groupTitle)).setText(c.getCourseName());
+            ((TextView) view.findViewById(R.id.groupSemester)).setText("AY 2025 - 2026, 2ND SEMESTER");
+            ((TextView) view.findViewById(R.id.courseCode)).setText(c.getCourseId() + " - January 2026");
+            ((ProgressBar) view.findViewById(R.id.progressBar)).setProgress(progress);
+            ((TextView) view.findViewById(R.id.progressPercent)).setText(progress + "%");
+            ((TextView) view.findViewById(R.id.progressLabel)).setText("Progress: " + progress + "%");
             return view;
         }
     }
