@@ -10,7 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CourseDetailActivity extends BaseActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class CourseDetailActivity extends AppCompatActivity {
 
     private Course course;
     private LinearLayout lessonsContainer;
@@ -20,6 +22,7 @@ public class CourseDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_detail);
 
+        // Get course from intent
         course = (Course) getIntent().getSerializableExtra("course");
 
         if (course == null) {
@@ -29,7 +32,7 @@ public class CourseDetailActivity extends BaseActivity {
         }
 
         setupViews();
-        setupCommonNavigation();
+        setupNavigation();
         loadLessons();
     }
 
@@ -63,6 +66,7 @@ public class CourseDetailActivity extends BaseActivity {
             lessonDescription.setText(lesson.getDescription());
             lessonDuration.setText(lesson.getContentTypeString() + " • " + lesson.getDurationMinutes() + " mins");
 
+            // Set icon based on content type
             switch (lesson.getContentType()) {
                 case TEXT:
                     contentTypeIcon.setImageResource(android.R.drawable.ic_menu_info_details);
@@ -76,6 +80,7 @@ public class CourseDetailActivity extends BaseActivity {
             }
 
             lessonItem.setOnClickListener(v -> openLesson(lesson));
+
             lessonsContainer.addView(lessonItem);
         }
     }
@@ -95,5 +100,25 @@ public class CourseDetailActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    private void setupNavigation() {
+        findViewById(R.id.navDashboard).setOnClickListener(v -> {
+            Intent i = new Intent(this, DashboardActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(i);
+        });
+
+        findViewById(R.id.navAnnouncements).setOnClickListener(v -> {
+            Intent i = new Intent(this, AnnouncementsActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(i);
+        });
+
+        findViewById(R.id.navAssignments).setOnClickListener(v ->
+                startActivity(new Intent(this, AssignmentsActivity.class)));
+
+        findViewById(R.id.navGrades).setOnClickListener(v ->
+                startActivity(new Intent(this, GradesActivity.class)));
     }
 }
